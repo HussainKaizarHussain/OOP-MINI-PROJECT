@@ -1,0 +1,229 @@
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 2
+
+Enter Book ID: 101
+
+Enter Title: Clean Code
+
+Enter Author: Robert C. Martin
+
+Book added successfully!
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 2
+
+Enter Book ID: 102
+
+Enter Title: The Pragmatic Programmer
+
+Enter Author: Andrew Hunt
+
+Book added successfully!
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 2
+
+Enter Book ID: 101
+
+Enter Title: Duplicate Book
+
+Enter Author: Test Author
+
+Error: A book with ID 101 already exists!
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 1
+
+
+
+--- LIBRARY BOOKS CATALOG ---
+
+ID: 101 | Title: Clean Code | Author: Robert C. Martin | Status: Available
+
+ID: 102 | Title: The Pragmatic Programmer | Author: Andrew Hunt | Status: Available
+
+-----------------------------
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 5
+
+Enter Book ID to issue: 101
+
+Book ID 101 issued successfully.
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 5
+
+Enter Book ID to issue: 101
+
+Error: Book with ID 101 is already issued.
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 3
+
+Enter Book ID to search: 999
+
+Error: Book with ID 999 not found.
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 6
+
+Enter Book ID to return: 101
+
+Book ID 101 returned successfully.
+
+
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+
+1. Display All Books
+
+2. Add New Book
+
+3. Search Book by ID
+
+4. Search Book by Title/Author Keyword
+
+5. Issue Book
+
+6. Return Book
+
+7. Exit
+
+Enter your choice: 7
+
+Exiting application. Data saved to books.csv. Goodbye!
