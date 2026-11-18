@@ -31,11 +31,13 @@ This project applies core Object-Oriented Programming principles:
 ## 🚀 Getting Started
 
 ### Prerequisites
-You need a C++ compiler supporting C++11 or later (such as `g++`, `clang`, or MSVC).
+You need a C++ compiler supporting C++11 or later (such as programiz).
 
 ### Compilation and Execution
 
-1. **Clone the repository** (or download the source code):
-   ```bash
-   git clone [https://github.com/your-username/library-management-system.git](https://github.com/your-username/library-management-system.git)
-   cd library-management-system
+1. **Copy Source Code From:**
+   https://github.com/HussainKaizarHussain/OOP-MINI-PROJECT
+
+2. **Paste it in compiler**
+
+   https://www.programiz.com/cpp-programming/online-compiler/
