@@ -1,293 +1,188 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <algorithm>
-#include <limits>
 
-// Custom Exception Class for Library Operations
-class LibraryException : public std::runtime_error {
-public:
-    explicit LibraryException(const std::string& message) 
-        : std::runtime_error(message) {}
-};
+using namespace std;
 
-// Book Entity Class
+// 1. Book Class represents a single book
 class Book {
 private:
-    int bookID;
-    std::string title;
-    std::string author;
+    int id;
+    string title;
+    string author;
     bool isAvailable;
 
 public:
-    Book(int id, std::string t, std::string a, bool available = true)
-        : bookID(id), title(std::move(t)), author(std::move(a)), isAvailable(available) {}
-
-    int getBookID() const { return bookID; }
-    std::string getTitle() const { return title; }
-    std::string getAuthor() const { return author; }
-    bool getAvailability() const { return isAvailable; }
-
-    void setAvailability(bool status) { isAvailable = status; }
-
-    void display() const {
-        std::cout << "ID: " << bookID 
-                  << " | Title: " << title 
-                  << " | Author: " << author 
-                  << " | Status: " << (isAvailable ? "Available" : "Issued") << "\n";
+    // Constructor
+    Book(int bookId, string bookTitle, string bookAuthor) {
+        id = bookId;
+        title = bookTitle;
+        author = bookAuthor;
+        isAvailable = true; // New books are available by default
     }
 
-    std::string toCSV() const {
-        return std::to_string(bookID) + "," + title + "," + author + "," + (isAvailable ? "1" : "0");
+    // Getter methods
+    int getId() { return id; }
+    string getTitle() { return title; }
+    string getAuthor() { return author; }
+    bool getAvailability() { return isAvailable; }
+
+    // Setter method to change status
+    void setAvailability(bool status) {
+        isAvailable = status;
     }
 
-    static Book fromCSV(const std::string& csvLine) {
-        std::stringstream ss(csvLine);
-        std::string idStr, title, author, availStr;
-
-        std::getline(ss, idStr, ',');
-        std::getline(ss, title, ',');
-        std::getline(ss, author, ',');
-        std::getline(ss, availStr, ',');
-
-        if (idStr.empty() || title.empty() || author.empty() || availStr.empty()) {
-            throw LibraryException("Corrupted record encountered in CSV file.");
-        }
-
-        return Book(std::stoi(idStr), title, author, std::stoi(availStr) == 1);
+    // Display book details
+    void display() {
+        cout << "ID: " << id 
+             << " | Title: " << title 
+             << " | Author: " << author 
+             << " | Status: " << (isAvailable ? "Available" : "Issued") << endl;
     }
 };
 
-// Library Manager Class
+// 2. Library Class manages the collection of books
 class Library {
 private:
-    std::vector<Book> books;
-    std::string filename;
+    vector<Book> books; // List to store books in memory
 
 public:
-    explicit Library(std::string csvFilename) : filename(std::move(csvFilename)) {
-        loadFromFile();
-    }
+    // Add a new book
+    void addBook() {
+        int id;
+        string title, author;
 
-    void addBook(int id, const std::string& title, const std::string& author) {
-        if (id <= 0) {
-            throw LibraryException("Book ID must be a positive integer.");
-        }
-        for (const auto& book : books) {
-            if (book.getBookID() == id) {
-                throw LibraryException("A book with ID " + std::to_string(id) + " already exists!");
+        cout << "Enter Book ID: ";
+        cin >> id;
+        
+        // Check if ID already exists
+        for (int i = 0; i < books.size(); i++) {
+            if (books[i].getId() == id) {
+                cout << "Error: A book with this ID already exists!\n";
+                return;
             }
         }
-        books.emplace_back(id, title, author, true);
-        saveToFile();
-        std::cout << "Book added successfully!\n";
+
+        cin.ignore(); // Clear input buffer
+        cout << "Enter Book Title: ";
+        getline(cin, title);
+        cout << "Enter Book Author: ";
+        getline(cin, author);
+
+        books.push_back(Book(id, title, author));
+        cout << "Book added successfully!\n";
     }
 
-    // Overloaded search by ID
-    void searchBook(int id) const {
-        auto it = std::find_if(books.begin(), books.end(), [id](const Book& b) {
-            return b.getBookID() == id;
-        });
-        if (it != books.end()) {
-            it->display();
-        } else {
-            throw LibraryException("Book with ID " + std::to_string(id) + " not found.");
-        }
-    }
-
-    // Overloaded search by Title/Author keyword
-    void searchBook(const std::string& keyword) const {
-        bool found = false;
-        for (const auto& book : books) {
-            if (book.getTitle().find(keyword) != std::string::npos || 
-                book.getAuthor().find(keyword) != std::string::npos) {
-                book.display();
-                found = true;
-            }
-        }
-        if (!found) {
-            std::cout << "No books found matching keyword: \"" << keyword << "\"\n";
-        }
-    }
-
-    void displayAllBooks() const {
+    // Display all books
+    void displayAllBooks() {
         if (books.empty()) {
-            std::cout << "The library catalog is currently empty.\n";
+            cout << "The library is empty.\n";
             return;
         }
-        std::cout << "\n--- LIBRARY BOOKS CATALOG ---\n";
-        for (const auto& book : books) {
-            book.display();
+
+        cout << "\n--- LIBRARY BOOKS ---\n";
+        for (int i = 0; i < books.size(); i++) {
+            books[i].display();
         }
-        std::cout << "-----------------------------\n";
+        cout << "---------------------\n";
     }
 
-    void issueBook(int id) {
-        auto it = std::find_if(books.begin(), books.end(), [id](const Book& b) {
-            return b.getBookID() == id;
-        });
-        if (it == books.end()) {
-            throw LibraryException("Cannot issue: Book with ID " + std::to_string(id) + " does not exist.");
-        }
-        if (!it->getAvailability()) {
-            throw LibraryException("Book with ID " + std::to_string(id) + " is already issued.");
-        }
-        it->setAvailability(false);
-        saveToFile();
-        std::cout << "Book ID " << id << " issued successfully.\n";
-    }
+    // Search book by ID using a simple for loop
+    void searchBook() {
+        int id;
+        cout << "Enter Book ID to search: ";
+        cin >> id;
 
-    void returnBook(int id) {
-        auto it = std::find_if(books.begin(), books.end(), [id](const Book& b) {
-            return b.getBookID() == id;
-        });
-        if (it == books.end()) {
-            throw LibraryException("Cannot return: Book with ID " + std::to_string(id) + " does not exist.");
-        }
-        if (it->getAvailability()) {
-            throw LibraryException("Book with ID " + std::to_string(id) + " is already available in the library.");
-        }
-        it->setAvailability(true);
-        saveToFile();
-        std::cout << "Book ID " << id << " returned successfully.\n";
-    }
-
-    void loadFromFile() {
-        std::ifstream file(filename);
-        if (!file.is_open()) {
-            return; // File does not exist yet; will be created on first save
-        }
-        books.clear();
-        std::string line;
-        while (std::getline(file, line)) {
-            if (!line.empty()) {
-                books.push_back(Book::fromCSV(line));
+        for (int i = 0; i < books.size(); i++) {
+            if (books[i].getId() == id) {
+                cout << "Book Found:\n";
+                books[i].display();
+                return;
             }
         }
-        file.close();
+        cout << "Book with ID " << id << " not found.\n";
     }
 
-    void saveToFile() const {
-        std::ofstream file(filename);
-        if (!file.is_open()) {
-            throw LibraryException("File I/O Error: Unable to open " + filename + " for writing.");
+    // Issue a book
+    void issueBook() {
+        int id;
+        cout << "Enter Book ID to issue: ";
+        cin >> id;
+
+        for (int i = 0; i < books.size(); i++) {
+            if (books[i].getId() == id) {
+                if (!books[i].getAvailability()) {
+                    cout << "Sorry, this book is already issued.\n";
+                    return;
+                }
+                books[i].setAvailability(false);
+                cout << "Book issued successfully!\n";
+                return;
+            }
         }
-        for (const auto& book : books) {
-            file << book.toCSV() << "\n";
+        cout << "Book not found.\n";
+    }
+
+    // Return a book
+    void returnBook() {
+        int id;
+        cout << "Enter Book ID to return: ";
+        cin >> id;
+
+        for (int i = 0; i < books.size(); i++) {
+            if (books[i].getId() == id) {
+                if (books[i].getAvailability()) {
+                    cout << "This book is already in the library (not issued).\n";
+                    return;
+                }
+                books[i].setAvailability(true);
+                cout << "Book returned successfully!\n";
+                return;
+            }
         }
-        file.close();
+        cout << "Book not found.\n";
     }
 };
 
-void displayMenu() {
-    std::cout << "\n===== LIBRARY MANAGEMENT SYSTEM =====\n";
-    std::cout << "1. Display All Books\n";
-    std::cout << "2. Add New Book\n";
-    std::cout << "3. Search Book by ID\n";
-    std::cout << "4. Search Book by Title/Author Keyword\n";
-    std::cout << "5. Issue Book\n";
-    std::cout << "6. Return Book\n";
-    std::cout << "7. Exit\n";
-    std::cout << "Enter your choice: ";
-}
-
+// Main function with Menu
 int main() {
-    try {
-        Library library("books.csv");
-        int choice;
+    Library myLibrary;
+    int choice;
 
-        do {
-            displayMenu();
-            if (!(std::cin >> choice)) {
-                std::cout << "Invalid input. Please enter a number between 1 and 7.\n";
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                continue;
-            }
+    do {
+        cout << "\n===== LIBRARY MENU =====\n";
+        cout << "1. Display All Books\n";
+        cout << "2. Add New Book\n";
+        cout << "3. Search Book by ID\n";
+        cout << "4. Issue Book\n";
+        cout << "5. Return Book\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice (1-6): ";
+        cin >> choice;
 
-            switch (choice) {
-                case 1:
-                    library.displayAllBooks();
-                    break;
-                case 2: {
-                    int id;
-                    std::string title, author;
-                    std::cout << "Enter Book ID: ";
-                    if (!(std::cin >> id)) {
-                        std::cout << "Error: Invalid ID format.\n";
-                        std::cin.clear();
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        break;
-                    }
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Enter Title: ";
-                    std::getline(std::cin, title);
-                    std::cout << "Enter Author: ";
-                    std::getline(std::cin, author);
-
-                    try {
-                        library.addBook(id, title, author);
-                    } catch (const std::exception& e) {
-                        std::cout << "Error: " << e.what() << "\n";
-                    }
-                    break;
-                }
-                case 3: {
-                    int id;
-                    std::cout << "Enter Book ID to search: ";
-                    std::cin >> id;
-                    try {
-                        library.searchBook(id);
-                    } catch (const std::exception& e) {
-                        std::cout << "Error: " << e.what() << "\n";
-                    }
-                    break;
-                }
-                case 4: {
-                    std::string keyword;
-                    std::cout << "Enter keyword to search: ";
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::getline(std::cin, keyword);
-                    library.searchBook(keyword);
-                    break;
-                }
-                case 5: {
-                    int id;
-                    std::cout << "Enter Book ID to issue: ";
-                    std::cin >> id;
-                    try {
-                        library.issueBook(id);
-                    } catch (const std::exception& e) {
-                        std::cout << "Error: " << e.what() << "\n";
-                    }
-                    break;
-                }
-                case 6: {
-                    int id;
-                    std::cout << "Enter Book ID to return: ";
-                    std::cin >> id;
-                    try {
-                        library.returnBook(id);
-                    } catch (const std::exception& e) {
-                        std::cout << "Error: " << e.what() << "\n";
-                    }
-                    break;
-                }
-                case 7:
-                    std::cout << "Exiting application. Data saved to books.csv. Goodbye!\n";
-                    break;
-                default:
-                    std::cout << "Invalid choice! Please select an option from 1 to 7.\n";
-            }
-        } while (choice != 7);
-
-    } catch (const std::exception& e) {
-        std::cerr << "Fatal Error: " << e.what() << "\n";
-        return 1;
-    }
+        switch (choice) {
+            case 1:
+                myLibrary.displayAllBooks();
+                break;
+            case 2:
+                myLibrary.addBook();
+                break;
+            case 3:
+                myLibrary.searchBook();
+                break;
+            case 4:
+                myLibrary.issueBook();
+                break;
+            case 5:
+                myLibrary.returnBook();
+                break;
+            case 6:
+                cout << "Exiting program. Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice! Please select between 1 and 6.\n";
+        }
+    } while (choice != 6);
 
     return 0;
 }
