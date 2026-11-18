@@ -3,10 +3,16 @@
 
 A simple, console-based **Library Management System** implemented in C++ as an Object-Oriented Programming (OOP) mini-project. This application allows users to manage a collection of books, track availability, and handle issuing and returning operations efficiently.
 
-## 👤 Author Details
+## 👤 Student Details
 * **Name:** Husain Kaizar Husain Dadawala
 * **URN:** E25B002817
 * **Course:** Object-Oriented Programming (OOP) Mini-Project
+
+---
+
+## 👨🏻‍🏫 Faculty Details
+* **Name:**
+* **Rate my Project😀:** 
 
 ---
 
