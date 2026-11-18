@@ -1,87 +1,41 @@
 # OOP-MINI-PROJECT
-Library Management System (C++ Mini Project)
+# 📚 Library Management System
 
-A console-based Library Management System built in C++ for Practical 12 (Option A). This project demonstrates core Object-Oriented Programming (OOP) principles, Standard Template Library (STL) containers, custom exception handling, and persistent CSV file storage.
+A simple, console-based **Library Management System** implemented in C++ as an Object-Oriented Programming (OOP) mini-project. This application allows users to manage a collection of books, track availability, and handle issuing and returning operations efficiently.
 
-Problem Statement & Users
+## 👤 Author Details
+* **Name:** Husain Kaizar Husain Dadawala
+* **URN:** E25B002817
+* **Course:** Object-Oriented Programming (OOP) Mini-Project
 
-Target Users: Librarians and library staff.
+---
 
-Problem Solved: Automates manual book tracking by providing a persistent, error-safe system to add books, search the catalog, and track book availability (issued vs. available).
+## ✨ Features
+* **Add Books:** Register new books into the library system with unique IDs, titles, and authors (includes duplicate ID validation).
+* **Display Catalog:** View a complete list of all available and issued books currently stored in the system.
+* **Search Books:** Quickly find specific books using their unique Book ID.
+* **Issue Books:** Check out available books by updating their status to "Issued".
+* **Return Books:** Process book returns to restore their status back to "Available".
+* **Interactive Menu:** Clean command-line user interface with loop-based navigation.
 
-Key Features
+---
 
-Object-Oriented Design: Encapsulates book properties in a Book class and library management operations in a Library class, utilizing function overloading for searching by ID or keyword.
+## 🛠️ OOP Concepts Demonstrated
+This project applies core Object-Oriented Programming principles:
+1. **Encapsulation:** Data hiding is implemented in both the `Book` and `Library` classes by keeping member variables (`id`, `title`, `author`, `isAvailable`, `books`) `private` and exposing controlled access via `public` getter and setter methods.
+2. **Classes and Objects:** The system models real-world entities cleanly using distinct classes (`Book` as an individual item, and `Library` as the manager of the collection).
+3. **Composition:** The `Library` class contains a `std::vector<Book>`, demonstrating a "has-a" relationship where the library manages multiple book instances.
 
-STL Integration: Uses std::vector and <algorithm> (std::find_if) for efficient in-memory record management.
+---
 
-Persistent Storage (File I/O): Automatically loads records from books.csv at startup and saves updates immediately using std::ifstream and std::ofstream.
+## 🚀 Getting Started
 
-Exception Handling: Implements a custom LibraryException class (derived from std::runtime_error) to safely handle duplicate IDs, non-existent books, unavailable books, and file errors.
+### Prerequisites
+You need a C++ compiler supporting C++11 or later (such as `g++`, `clang`, or MSVC).
 
-UML Class Diagram
+### Compilation and Execution
 
-+-------------------------------------------------------+
-|                         Book                          |
-+-------------------------------------------------------+
-| - bookID : int                                        |
-| - title : std::string                                 |
-| - author : std::string                                |
-| - isAvailable : bool                                  |
-+-------------------------------------------------------+
-| + Book(id: int, t: string, a: string, avail: bool)    |
-| + getBookID() : int                                   |
-| + getTitle() : std::string                            |
-| + getAuthor() : std::string                           |
-| + getAvailability() : bool                            |
-| + setAvailability(status: bool) : void                |
-| + display() : void                                    |
-| + toCSV() : std::string                               |
-| + fromCSV(csvLine: std::string) : Book (static)       |
-+-------------------------------------------------------+
-                           | 1
-                           | manages *
-                           v
-+-------------------------------------------------------+
-|                        Library                        |
-+-------------------------------------------------------+
-| - books : std::vector<Book>                           |
-| - filename : std::string                              |
-+-------------------------------------------------------+
-| + Library(csvFilename: std::string)                   |
-| + addBook(id: int, title: string, author: string)     |
-| + searchBook(id: int) : void                          |
-| + searchBook(keyword: std::string) : void             |
-| + displayAllBooks() : void                            |
-| + issueBook(id: int) : void                           |
-| + returnBook(id: int) : void                          |
-| + loadFromFile() : void                               |
-| + saveToFile() : void                                 |
-+-------------------------------------------------------+
-                           | throws
-                           v
-+-------------------------------------------------------+
-|                   LibraryException                    |
-|             (extends std::runtime_error)              |
-+-------------------------------------------------------+
-| + LibraryException(message: std::string)              |
-+-------------------------------------------------------+
-
-
-Compilation & Execution
-
-Compile the code using a C++11 (or newer) compiler:
-
-g++ -std=c++11 library_management.cpp -o library_system
-
-
-Run the executable:
-
-On Linux/macOS:
-
-./library_system
-
-
-On Windows:
-
-library_system.exe
+1. **Clone the repository** (or download the source code):
+   ```bash
+   git clone [https://github.com/your-username/library-management-system.git](https://github.com/your-username/library-management-system.git)
+   cd library-management-system
