@@ -11,8 +11,9 @@ A simple, console-based **Library Management System** implemented in C++ as an O
 ---
 
 ## 👨🏻‍🏫 Faculty Details
-* **Name:**
-* **Rate my Project😀:** 
+* **Name:** Mr Dattatray Dudhamogre
+* **Submitted on:** 19 November 2026
+* **Rate my Project😀:** https://forms.gle/kPvz1WYPx7yH5iRF9
 
 ---
 
